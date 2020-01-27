@@ -13,7 +13,12 @@ tag1 = BeautifulSoup(response1.data)
 tag2 = BeautifulSoup(response2.data)
 #soup = inhalt (anscheinend)
 
+tag = tag2 #veränderbar
+
+#definiert Funktion zum auslesen der Daten in eine Liste aus Acht Listen
 def ausleser(url):
+
+
     rows = []
 
     i = 0
@@ -33,8 +38,12 @@ def ausleser(url):
                 z = 0
     return(rows)
 
-print(ausleser(tag2))
 
+print(ausleser(tag)[0][0])
 
+klasse = input('Klasse(05A):')
 
+for l in range(12):
+    if klasse in str(ausleser(tag)[l][0]):
+        print(ausleser(tag)[l])
 
