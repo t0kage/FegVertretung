@@ -1,21 +1,30 @@
 from bs4 import BeautifulSoup
 import urllib3
 
+
 #connecting to website
 http = urllib3.PoolManager()
-url1 = 'http://anne-langner.de/feg-verwaltung.de/netzlaufwerk/VPlanWebsite/Monitor/Schueler_Tag1/f1/subst_001.htm'
-url2 = 'http://anne-langner.de/feg-verwaltung.de/netzlaufwerk/VPlanWebsite/Monitor/Schueler_Tag2/f1/subst_001.htm'
 #logs in
 headers = urllib3.util.make_headers(basic_auth='feg:vertretung')
-response1 = http.request('GET', url1, headers=headers)
-response2 = http.request('GET', url2, headers=headers)
-tag1 = BeautifulSoup(response1.data)
-tag2 = BeautifulSoup(response2.data)
-#soup = inhalt (anscheinend)
+#funktion zur ermittlung der seitenanzahltag1
+def seitenanzahl(b):
+    for element in b.find_all("div"):
+        seite = element.text
+    seite = seite[-2]
+    if seite == ' ':
+        return(0)
+    return(seite)
 
-tag = tag2 #veränderbar
+def urlgen(tag,seite):
+    tag = str(tag); seite = str(seite)
+    if len(seite) >= 2: 
+        seite = seite[0]
+    stamm = 'http://anne-langner.de/feg-verwaltung.de/netzlaufwerk/VPlanWebsite/Monitor/Schueler_Tag'+ tag+ '/f1/subst_00'+ seite+ '.htm'
+    stamm = str(stamm)
+    response1 = http.request('GET', stamm, headers=headers)
+    returnurl = BeautifulSoup(response1.data)
+    return(returnurl)
 
-#definiert Funktion zum auslesen der Daten in eine Liste aus Acht Listen
 def ausleser(url):
 
 
@@ -39,11 +48,19 @@ def ausleser(url):
     return(rows)
 
 
-print(ausleser(tag)[0][0])
+url = urlgen(1,1)
 
-klasse = input('Klasse(05A):')
+smax = seitenanzahl(url)
+#liste mit allem
+all1 = []
+all2 = []
+def zusammenfuegen(bigmama,tag):
+        for i in range(1,int(smax)+1):
+            url = urlgen(tag,i)
+            bigmama.extend(ausleser(url))
+        return(bigmama)
 
-for l in range(12):
-    if klasse in str(ausleser(tag)[l][0]):
-        print(ausleser(tag)[l])
+all1, all2 = zusammenfuegen(all1, 1), zusammenfuegen(all2, 2)
 
+#okaaay 1.Teil finished!!!  all1 = Tag1, all2 = Tag2
+#Der nächste Teil sollte in der DB checken, welche Leute frei haben
