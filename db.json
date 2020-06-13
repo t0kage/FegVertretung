@@ -1,3 +1,5 @@
 [
-    {"name":"Maurice", "email":"mauricegoldmann@protonmail.com", "stufe": "Q1", "kurse":[]}
+    {'email': 'nils.vgt@gmx.de', 'name': 'Nils', 'stufe': 'Q1', 'kurse': []}
+    {'email': 'mauricegoldmann@protonmail.com', 'name': 'Maurice', 'stufe': 'Q1', 'kurse': []}
+    {'email': 'nilsundjona@gmx.de', 'name': 'Jona', 'stufe': '07C', 'kurse': []}
 ]
