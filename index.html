@@ -15,40 +15,64 @@
             <label for="email" class="eintrag">Deine E-Mail</label><br>
             <input type="text" id="email" name="email"><br>
             <br>
-            <label class="eintrag">Stufe</label><br>
             <br>
             <label class="eintrag">Stufe</label><br>         
-            <input list="stufen">
-            <datalist id="stufen">
-                <option value="05">
-                <option value="06">
-                <option value="07">
-                <option value="08">
-                <option value="09">
-                <option value="EF">
-                <option value="Q1">
-                <option value="Q2">
-                <option value="IK">
-            </datalist><br>
+            <input list="stufen" id="stufe">
+                <datalist id="stufen">
+                    <option value="05"></option>
+                    <option value="06"></option>
+                    <option value="07"></option>
+                    <option value="08"></option>
+                    <option value="09"></option>
+                    <option value="EF"></option>
+                    <option value="Q1"></option>
+                    <option value="Q2"></option>
+                    <option value="IK"></option>
+                </datalist><br>
             <br>
             <label class="eintrag">Klasse(05-09)</label><br>         
-            <input list="klassen">
-            <datalist id="klassen">
-                <option value="A">
-                <option value="B">
-                <option value="C">
-                <option value="D">
-                <option value="E">
-                <option value="F">
-            </datalist><br>
+            <input list="klassen" id="klasse" value="x">
+                <datalist id="klassen">
+                    <option value="A"></option>
+                    <option value="B"></option>
+                    <option value="C"></option>
+                    <option value="D"></option>
+                    <option value="E"></option>
+                    <option value="F"></option>
+                    <option value="x"></option>
+                </datalist><br>
             <br>
             <label class="eintrag">Kurse(EF-Q2)</label><br>         
             <input type="text"  name="kurse"><br>
             <br>Die Kursnamen bitte in der gleichen<br>
             Form wie auf dem Vertretungsplan auch<br>
             angeben. (z.B. EKG2 oder F5L1)<br><br>
-            <input type="submit" value="Abschicken">
+            <input id="btn" type="submit" value="Abschicken">
         </form>
+        <script>
+            let people = [];
+            //ex: {"email': 'bob@gmx.de', 'name': 'Bob', 'stufe': 'Q1', 'kurse': []}
+            const addPerson = (ev)=>{
+                ev.preventDefault(); //damit die webseite nicht verschwindet
+                let person = {
+                    name: document.getElementById("name").value,
+                    email: document.getElementById("email").value,
+                    stufe: document.getElementById("stufe").value,
+                    klasse: document.getElementById("klasse").value
+                }
+                people.push(person);
+                document.forms[0].reset(); //alles entleeren
+
+                //nur zum testen
+                console.warn('added', {people});
+                let pre = document.querySelector('#msg pre');
+                pre.textContent = '\n' + JSON.stringify(people, '\t', 2);
+            }
+
+            document.addEventListener("DOMContentLoaded", ()=>{
+                document.getElementById("btn").addEventListener('click', addPerson);
+            });
+        </script>
     </body>
 
 </html> 
